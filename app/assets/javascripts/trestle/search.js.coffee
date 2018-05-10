@@ -2,11 +2,18 @@
 //= require trestle/jquery-ui/ui/widget
 //= require trestle/jquery-ui/ui/widgets/autocomplete
 
+setValue = (field, val) ->
+  $("[name='#{field.attr('name').replace(/_autocomplite/, '')}']").val(val)
+
 setAutocomplite = ->
   $('.autocomplite').each ->
     field = $(this)
 
-    field.autocomplete 
+    field.blur ->
+      if(field.val().length == 0)
+        setValue field, ''
+
+    field.autocomplete
       source: (request, response) ->
         $.ajax
           url: field.data('remote-url')
@@ -21,7 +28,7 @@ setAutocomplite = ->
               } ]
             )
       select: (event, ui) ->
-        $("[name='#{field.attr('name').replace(/_autocomplite/, '')}']").val(ui.item.id)
+        setValue field, ui.item.id
 
 document.addEventListener 'turbolinks:load', ->
   setAutocomplite()
