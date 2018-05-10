@@ -1,4 +1,4 @@
-# Trestle Search (trestle-search)
+# Extended Trestle Search (trestle-search)
 
 > Search plugin for the Trestle admin framework
 
@@ -43,6 +43,42 @@ Trestle.resource(:articles) do
 end
 ```
 
+Filter collection by the specific attribute:
+
+```ruby
+Trestle.resource(:articles) do
+  filter name: :category_id, label: 'Category', remote_collection_url: '/admin/categories/search'
+  filter name: :status, collection: %w[draft published]
+
+  search do |q, params|
+    articles = Article.all
+
+    articles = articles.where("title ILIKE ?", "%#{q}%") if q
+
+    articles = articles.where(category_id: params[:category_id]) if params[:category_id].presence
+
+    articles = articles.where(status: params[:status]) if params[:status].presence
+
+    articles
+  end
+end
+
+Trestle.resource(:categories) do
+  routes do
+    get :search, on: :collection
+  end
+  
+  controller do
+    def search
+      categories = Category.all
+
+      categories = categories.where('title ILIKE ?', "%#{params[:term]}%") if params[:term].presence
+
+      render json: categories.limit(20).map { |l| { value: l.title, id: l.id } }.to_json
+    end
+  end
+end
+```
 
 ## Integration Examples
 
