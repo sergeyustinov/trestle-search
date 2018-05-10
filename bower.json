@@ -1,0 +1,6 @@
+{
+  "name": "trestle-search",
+  "dependencies": {
+      "jquery-ui": "~1.12"
+  }
+}

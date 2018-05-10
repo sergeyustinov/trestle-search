@@ -2,6 +2,7 @@ module Trestle
   module Search
     module Resource
       attr_writer :search
+      attr_accessor :filters
 
       def initialize_collection(params)
         if searchable?

@@ -1,9 +1,28 @@
 @import "trestle/support";
+@import "trestle/jquery-ui/themes/base/jquery-ui.min";
+
+.ui-helper-hidden-accessible {
+  display: none;
+}
+
+.ui-autocomplete {
+  max-height: 100px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #ccc;
+}
+
+/* IE 6 */
+* html .ui-autocomplete {
+  height: 100px;
+}
 
 .searchbox {
-  float: left;
-  max-width: 25%;
   padding: 8px 0;
+
+  icon {
+    padding: 11px 5px 0 0;
+  }
 
   .input-group-addon {
     background: none;
